@@ -1,3 +1,3 @@
 # DSI-SF-2-vnessified
 
-Just a human learning machine learning 👾
+I'm just a human learning machine learning 👾
