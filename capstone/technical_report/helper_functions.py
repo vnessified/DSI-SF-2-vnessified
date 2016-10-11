@@ -16,7 +16,7 @@ from matplotlib import colors
 from matplotlib import pyplot as plt
 from matplotlib import cm as cm
 
-def img_plots(fig_h, path_list, label_df, x_label, variable_df, plot_title):
+def img_plots(fig_h, path_list, plot_title, label_df=None, x_label=None, variable_df=None):
     sns.set_style("white")
     fig, ax = plt.subplots(1,5,figsize=(16,fig_h))
     
@@ -32,13 +32,13 @@ def img_plots(fig_h, path_list, label_df, x_label, variable_df, plot_title):
         plt.xticks([], [])
         plt.yticks([], [])
         plt.imshow(images_plot[i])
-        label = 'not pizza' if label_df.values[i] == 0 else 'pizza'
-        plt.title(label, size=16)
-        plt.xlabel(x_label + "\n%.3f" % variable_df.values[i], size=14)
+        if not label_df is None:
+            label = 'not pizza' if label_df.values[i] == 0 else 'pizza'
+            plt.title(label, size=16)
+        if not (x_label is None) and not (variable_df is None):
+            plt.xlabel(x_label + "\n%.3f" % variable_df.values[i], size=14)
         plt.suptitle(plot_title, size=18)
     plt.show()  
-
-
 
 
 def epoch_plot(acc, val_acc, loss, val_loss):
@@ -77,3 +77,24 @@ def corr(df, title):
     ax.set_yticklabels(ax.yaxis.get_ticklabels(), fontsize=14, rotation=0)
     plt.suptitle(title, size=18)
     plt.show()
+
+
+def rgb_plots(red, red_label, green, green_label, blue, blue_label, title):
+    sns.set_style("dark")
+    fig, ax = plt.subplots(1,3,figsize=(18,4))
+    sns.despine()
+
+    sns.distplot(red, bins=100, kde=False, hist_kws={"alpha": 1, "color": sns.xkcd_rgb["pale red"]}, ax=ax[0])
+    ax[0].set_xlabel(red_label, size = 16, )
+
+    sns.distplot(green, bins=100, kde=False, hist_kws={"alpha": 1, "color": sns.xkcd_rgb["medium green"]}, ax=ax[1])
+    ax[1].set_xlabel(green_label, size = 16)
+
+    sns.distplot(blue, bins=100, kde=False, hist_kws={"alpha": 1, "color": sns.xkcd_rgb["denim blue"]}, ax=ax[2])
+    ax[2].set_xlabel(blue_label, size = 16)
+
+    plt.suptitle(title, size=18)
+    plt.show()
+
+
+
