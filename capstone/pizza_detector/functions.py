@@ -40,6 +40,28 @@ def img_plots(fig_h, path_list, plot_title, label_df=None, x_label=None, variabl
         plt.suptitle(plot_title, size=18)
     plt.show()  
 
+
+def transformed_plots(fig_h, path_list, plot_title):
+    sns.set_style("white")
+    fig, ax = plt.subplots(1,5,figsize=(16,fig_h))
+    
+    images_plot = []
+    
+    for img in path_list[:5]:
+        image = cv2.imread(img)
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        images_plot.append(image_rgb)
+    
+    for i in range(5):
+        plt.subplot(1,5,i+1)
+        plt.xticks([], [])
+        plt.yticks([], [])
+        plt.imshow(images_plot[i])
+        plt.suptitle(plot_title, size=18)
+    plt.show()  
+    
+
+
 def epoch_plot(acc, val_acc, loss, val_loss):
     # A plot of accuracy on the training and validation datasets over training epochs.
     sns.set_style("dark")
@@ -94,8 +116,6 @@ def color_space_plots(space1, color1, space1_label, space2, color2, space2_label
 
     plt.suptitle(title, size=18)
     plt.show()
-
-
 
 
 
