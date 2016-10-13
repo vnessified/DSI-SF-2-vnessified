@@ -40,28 +40,6 @@ def img_plots(fig_h, path_list, plot_title, label_df=None, x_label=None, variabl
         plt.suptitle(plot_title, size=18)
     plt.show()  
 
-
-def transformed_plots(fig_h, path_list, plot_title):
-    sns.set_style("white")
-    fig, ax = plt.subplots(1,5,figsize=(16,fig_h))
-    
-    images_plot = []
-    
-    for img in path_list[:5]:
-        image = cv2.imread(img)
-        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        images_plot.append(image_rgb)
-    
-    for i in range(5):
-        plt.subplot(1,5,i+1)
-        plt.xticks([], [])
-        plt.yticks([], [])
-        plt.imshow(images_plot[i])
-        plt.suptitle(plot_title, size=18)
-    plt.show()  
-    
-
-
 def epoch_plot(acc, val_acc, loss, val_loss):
     # A plot of accuracy on the training and validation datasets over training epochs.
     sns.set_style("dark")
@@ -115,6 +93,54 @@ def color_space_plots(space1, color1, space1_label, space2, color2, space2_label
     ax[2].set_xlabel(space3_label, size = 16)
 
     plt.suptitle(title, size=18)
+    plt.show()
+
+
+def roc(actual, preds):
+    sns.set_style("dark")
+
+    fpr_, tpr_, _ = roc_curve(actual, preds)
+    auc_ = auc(fpr_, tpr_)
+    acc_ = np.abs(0.5 - np.mean(actual)) + 0.5
+
+    fig, axr = plt.subplots(figsize=(8,7))
+
+    axr.plot(fpr_, tpr_, label='ROC (area = %0.2f)' % auc_,
+             color='darkred', linewidth=2,
+             alpha=0.7)
+    axr.plot([0, 1], [0, 1], color='grey', ls='dashed',
+             alpha=0.9, linewidth=2, label='baseline accuracy = %0.2f' % acc_)
+
+    axr.set_xlim([-0.05, 1.05])
+    axr.set_ylim([0.0, 1.05])
+    axr.set_xlabel('False positive rate', fontsize=14)
+    axr.set_ylabel('True positive rate', fontsize=14)
+    axr.set_title('Pizza vs. not pizza ROC curve\n', fontsize=16)
+
+    axr.legend(loc="lower right", fontsize=12)
+
+    plt.show()
+    
+
+def conf_matrix_plot(actual, predicted, classes, title):
+    
+    cm = confusion_matrix(actual, predicted)
+    
+    plt.figure(figsize=(4, 4))
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title(title)
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, cm[i, j],
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+    plt.ylabel('True label', size=14)
+    plt.xlabel('Predicted label', size=14)
     plt.show()
 
 
