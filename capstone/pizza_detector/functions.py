@@ -122,16 +122,17 @@ def roc(actual, preds):
     plt.show()
     
 
-def conf_matrix_plot(actual, predicted, classes, title):
+def conf_matrix_plot(actual, predicted, classes, title=None):
     
     cm = confusion_matrix(actual, predicted)
     
     plt.figure(figsize=(4, 4))
     plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
-    plt.title(title)
+    if not title is None:
+        plt.title(title)
     tick_marks = np.arange(len(classes))
-    plt.xticks(tick_marks, classes, rotation=45)
-    plt.yticks(tick_marks, classes)
+    plt.xticks(tick_marks, classes, rotation=45, size=14)
+    plt.yticks(tick_marks, classes, size=14)
 
     thresh = cm.max() / 2.
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
