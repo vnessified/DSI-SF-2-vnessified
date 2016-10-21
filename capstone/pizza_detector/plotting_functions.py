@@ -1,5 +1,5 @@
 # standard imports
-import os, glob, fnmatch, pickle, itertools
+import itertools
 import pandas as pd
 import numpy as np
 
@@ -7,7 +7,7 @@ import numpy as np
 import cv2
 
 # classification metrics imports
-from sklearn.metrics import roc_curve, roc_auc_score, auc, classification_report, confusion_matrix, accuracy_score, precision_score, recall_score
+from sklearn.metrics import roc_curve, roc_auc_score, auc, confusion_matrix
 
 # plotting imports
 import seaborn as sns
@@ -19,14 +19,14 @@ from matplotlib import cm as cm
 def img_plots(fig_h, path_list, plot_title, label_df=None, x_label=None, variable_df=None):
     sns.set_style("white")
     fig, ax = plt.subplots(1,5,figsize=(16,fig_h))
-    
+
     images_plot = []
-    
+
     for img in path_list[:5]:
         image = cv2.imread(img)
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         images_plot.append(image_rgb)
-    
+
     for i in range(5):
         plt.subplot(1,5,i+1)
         plt.xticks([], [])
@@ -38,7 +38,7 @@ def img_plots(fig_h, path_list, plot_title, label_df=None, x_label=None, variabl
         if not (x_label is None) and not (variable_df is None):
             plt.xlabel(x_label + "\n%.3f" % variable_df.values[i], size=14)
         plt.suptitle(plot_title, size=18)
-    plt.show()  
+    plt.show()
 
 def epoch_plot(acc, val_acc, loss, val_loss):
     # A plot of accuracy on the training and validation datasets over training epochs.
@@ -120,12 +120,12 @@ def roc(actual, preds):
     axr.legend(loc="lower right", fontsize=12)
 
     plt.show()
-    
+
 
 def conf_matrix_plot(actual, predicted, classes, title=None):
-    
+
     cm = confusion_matrix(actual, predicted)
-    
+
     plt.figure(figsize=(4, 4))
     plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
     if not title is None:
@@ -143,6 +143,3 @@ def conf_matrix_plot(actual, predicted, classes, title=None):
     plt.ylabel('True label', size=14)
     plt.xlabel('Predicted label', size=14)
     plt.show()
-
-
-
